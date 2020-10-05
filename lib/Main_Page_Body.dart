@@ -59,14 +59,14 @@ class _Main_Page_BodyState extends State<Main_Page_Body> {
             physics: NeverScrollableScrollPhysics(),
             itemCount: data.mainPageList.elementAt(index).itemArray.length,
             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2,childAspectRatio: 1,),
-            itemBuilder: (contxt, index){
+            itemBuilder: (contxt, indx){
               return Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   ClipRRect(
                     borderRadius: BorderRadius.circular(50.0),
                     child: Image.network(
-                      data.mainPageList.elementAt(index).itemArray.elementAt(index).icon,
+                      data.mainPageList.elementAt(index).itemArray.elementAt(indx).icon,
                       fit: BoxFit.fitWidth,
                       height: 80,
                       width: 80,
@@ -76,7 +76,7 @@ class _Main_Page_BodyState extends State<Main_Page_Body> {
                     width: 80,
                     child: FittedBox(
                       fit: BoxFit.fitWidth,
-                      child: Text(data.mainPageList.elementAt(index).itemArray.elementAt(index).title),
+                      child: Text(data.mainPageList.elementAt(index).itemArray.elementAt(indx).title),
                     ),
                   ),
                 ],
