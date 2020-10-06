@@ -1,12 +1,15 @@
 import 'package:DhofaryUniversity/Data.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:sticky_headers/sticky_headers.dart';
 
-import 'Main_Page_Body.dart';
+import 'Constant.dart';
+import 'Slider.dart';
+import 'Slider.dart';
 
 
 class HomePage extends StatelessWidget {
-  final appTitle = 'Dhofar University';
+  final appTitle = 'Dashboard';
   Data data;
 
   HomePage(this.data);
@@ -29,8 +32,8 @@ class HomePageState extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text(title)),
-      body: Main_Page_Body(data),
+      appBar: AppBar(title: Text(title),backgroundColor:  Color(int.parse("0xFF1C5E20")),),
+      body: CarouselWithIndicatorDemo(this.data),
       drawer: Drawer(
         // Add a ListView to the drawer. This ensures the user can scroll
         // through the options in the drawer if there isn't enough vertical
@@ -40,13 +43,10 @@ class HomePageState extends StatelessWidget {
 
           children: <Widget>[
           Container(
-            child: DrawerHeader(
-                child: Image.asset("assets/logo.png"),
-                decoration: BoxDecoration(
-                  color: Colors.blue,
-                ),
-              ),
-          )
+            height: 200,
+              child: Image.asset("assets/splash.png",width: 500,fit: BoxFit.fitWidth,),
+
+            )
             ,
             Expanded(
               child: new ListView.builder
@@ -57,7 +57,7 @@ class HomePageState extends StatelessWidget {
                     return new ListTile(
                         title:Row(
                           children: <Widget>[
-                            Image.network(data.menuList.elementAt(index).icon,width: 40,height: 40,),
+                            Image.network(BASE_URL+data.menuList.elementAt(index).icon,width: 40,height: 40,),
                             Padding(
                               padding: const EdgeInsets.all(8.0),
                               child: Text(data.menuList.elementAt(index).title,style: TextStyle(fontSize: 17),),

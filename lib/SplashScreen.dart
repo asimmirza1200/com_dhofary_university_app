@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'package:DhofaryUniversity/Constant.dart';
 import 'package:DhofaryUniversity/Data.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -34,7 +35,7 @@ class _SplashScreenState extends State<SplashScreen> {
 
     }
     void fetchAlbum() async {
-        final response = await http.get('http://192.168.18.148/dhofar_university/api/fetch_data.php');
+        final response = await http.get(BASE_URL+'/api/fetch_data.php');
 
         if (response.statusCode == 200) {
             // If the server did return a 200 OK response,
