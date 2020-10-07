@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_controller.dart';
 import 'package:carousel_slider/carousel_options.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sticky_headers/sticky_headers.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import 'Constant.dart';
 
@@ -31,11 +33,14 @@ class CarouselWithIndicatorDemo extends StatefulWidget {
 class _CarouselWithIndicatorState extends State<CarouselWithIndicatorDemo> {
   int _current = 0;
 
+  SharedPreferences prefs;
+
 
   _CarouselWithIndicatorState();
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       body: Container(
         height: MediaQuery.of(context).size.height,
@@ -61,7 +66,7 @@ class _CarouselWithIndicatorState extends State<CarouselWithIndicatorDemo> {
                     );
                   }).toList(),
                 ),
-                new SizedBox(height: 20.0),
+//                new SizedBox(height: 20.0),
                 new ListView.builder(
                   shrinkWrap: true,
                   itemCount: data2.mainPageList.length,
@@ -77,8 +82,8 @@ class _CarouselWithIndicatorState extends State<CarouselWithIndicatorDemo> {
                             children: <Widget>[
 
                               new Padding(
-                                  padding: const EdgeInsets.only(left: 5.0)),
-                              new Text(data2.mainPageList.elementAt(index).catTitle,
+                                  padding: const EdgeInsets.only(left: 10.0)),
+                              new Text(    LANGUAGE==0? data2.mainPageList.elementAt(index).catTitle:data2.mainPageList.elementAt(index).catTitleArabic,
                                   style: new TextStyle(
                                       fontSize: 20.0, color: Colors.white)),
                             ],
@@ -88,31 +93,43 @@ class _CarouselWithIndicatorState extends State<CarouselWithIndicatorDemo> {
                           child: GridView.count(
                             crossAxisCount: 3,
                             shrinkWrap: true,
+                            childAspectRatio: MediaQuery.of(context).size.width /
+                                (MediaQuery.of(context).size.height / 2.5),
                             physics: PageScrollPhysics(),
+
                             children: List.generate(data2.mainPageList.elementAt(index).itemArray.length, (inde2x) {
-                                return Padding(
-                                  padding: const EdgeInsets.all(2.0),
-                                  child: Column(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                  ClipRRect(
-                                      borderRadius: BorderRadius.circular(50.0),
-                                      child: Image.network(
-                                        BASE_URL+data2.mainPageList.elementAt(index).itemArray.elementAt(inde2x).icon,
-                                        fit: BoxFit.fitWidth,
-                                        height: 50,
-                                        width: 50,
+                                return InkResponse(
+                                  onTap: (){
+                                   _launchURL(data2.mainPageList.elementAt(index).itemArray.elementAt(inde2x).redirectUrl);
+                                  },
+
+                                  child: Padding(
+
+                                    padding: const EdgeInsets.fromLTRB(0,8,0,0),
+                                    child: Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                    ClipRRect(
+
+                                        borderRadius: BorderRadius.circular(50.0),
+                                        child: Image.network(
+                                          BASE_URL+data2.mainPageList.elementAt(index).itemArray.elementAt(inde2x).icon,
+                                          fit: BoxFit.fitWidth,
+                                          height: 50,
+                                          width: 50,
+                                        ),
+
                                       ),
+                                        Text((LANGUAGE==0?data2.mainPageList.elementAt(index).itemArray.elementAt(inde2x).title.substring(0,data2.mainPageList.elementAt(index).itemArray.elementAt(inde2x).title.length>12?12:data2.mainPageList.elementAt(index).itemArray.elementAt(inde2x).title.length)+(data2.mainPageList.elementAt(index).itemArray.elementAt(inde2x).title.length>12?"...":""):data2.mainPageList.elementAt(index).itemArray.elementAt(inde2x).arabicTitle.substring(0,data2.mainPageList.elementAt(index).itemArray.elementAt(inde2x).arabicTitle.length>12?12:data2.mainPageList.elementAt(index).itemArray.elementAt(inde2x).arabicTitle.length)+(data2.mainPageList.elementAt(index).itemArray.elementAt(inde2x).arabicTitle.length>12?"...":"")),style: TextStyle(fontSize: 14),),
+                                      ],
                                     ),
-                                      Text(data2.mainPageList.elementAt(index).itemArray.elementAt(inde2x).title.substring(0,data2.mainPageList.elementAt(index).itemArray.elementAt(inde2x).title.length>8?8:data2.mainPageList.elementAt(index).itemArray.elementAt(inde2x).title.length),style: TextStyle(fontSize: 14),),
-                                    ],
                                   ),
                                 );
                               },
                             ),
                           ),
                         ),
-                        new SizedBox(height: 20.0),
+//                        new SizedBox(height: 20.0),
                       ],
                     );
                   },
@@ -124,7 +141,19 @@ class _CarouselWithIndicatorState extends State<CarouselWithIndicatorDemo> {
       ),
     );
   }
+  _launchURL(var url) async {
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw 'Could not launch $url';
+    }
+  }
 
+  Future<void> getLocalData
+      () async {
+
+    prefs = await SharedPreferences.getInstance();
+  }
 //  Widget gridHeader(){
 //    return new ListView.builder(itemCount: data2.mainPageList.length,itemBuilder: (context, index) {
 //      return new StickyHeader(

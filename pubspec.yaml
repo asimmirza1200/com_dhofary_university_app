@@ -20,7 +20,10 @@ dependencies:
   http:
   sticky_headers: ^0.1.7
   carousel_slider: ^2.3.1
-
+  url_launcher: ^5.0.2
+  introduction_screen: ^1.0.9
+  shared_preferences: ^0.5.12
+  popup_menu:
 
   flutter:
     sdk: flutter
@@ -52,6 +55,12 @@ flutter:
   assets:
     - assets/splash.png
     - assets/logo.png
+    - assets/img1.jpg
+    - assets/img2.jpg
+    - assets/img3.jpg
+    - assets/snapchat.png
+    - assets/instagram.png
+    - assets/twitter.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
